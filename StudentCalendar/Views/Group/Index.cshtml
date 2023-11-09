@@ -1,0 +1,19 @@
+﻿@model IQueryable<Group>
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-4">Id</div>
+            <div class="col-md-4">GroupName</div>
+        </div>
+    </li>
+    @foreach (Group group in Model)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-4">@group.Id</div>
+                <div class="col-md-4">@group.Name</div>
+            </div>
+        </li>
+    }
+</ul>
