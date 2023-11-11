@@ -19,12 +19,27 @@ namespace StudentCalendar.Repositories
             return await SaveAsync();
         }
 
+        public async Task<bool> DeleteLesson(Lesson lesson)
+        {
+            await Task.Run(()=>_context.Remove(lesson));
+            return await SaveAsync();
+        }
+        public async Task<bool> EditLesson(Lesson lesson)
+        {
+            await Task.Run(()=> _context.Lessons.Update(lesson));
+            return await SaveAsync();
+        }
+
         public async Task<bool> SaveAsync()
         {
             var saved = await _context.SaveChangesAsync();
             return saved > 0 ? true : false;
         }
 
+        public async Task<Lesson> FindLessonById(int idLesson)
+        {
+            return await _context.Lessons.FindAsync(idLesson);
+        }
         public async Task<IQueryable<Lesson>> GetLessonsByGroupId(int groupId)
         {
             return await Task.Run(() => _context.Lessons.Where(x => x.IdGroup == groupId));

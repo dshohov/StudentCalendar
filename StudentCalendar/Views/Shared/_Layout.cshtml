@@ -37,6 +37,20 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="AdminFunctions">AdminFunction</a>
                                 </li>
                             }
+                            else
+                            {
+                                var userId = UserManager.GetUserId(User);
+                                var user = await UserManager.FindByIdAsync(userId);
+
+                                if (user != null)
+                                {
+                                    var idGroup = user.IdGroup;
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-route-idGroup="@idGroup" asp-controller="Lesson" asp-action="Index">View Lessons</a>
+                                    </li>
+                                }
+                            }
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Hello @UserManager.GetUserName(User)</a>
                             </li>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentCalendar.IServices;
 using StudentCalendar.Models;
+using StudentCalendar.ViewModels;
+using System.Text.RegularExpressions;
 
 namespace StudentCalendar.Controllers
 {
@@ -31,6 +33,27 @@ namespace StudentCalendar.Controllers
             if (await _lessonService.PostCreateLesson(lesson))
                 return RedirectToAction("Index", "Lesson", new { idGroup = lesson.IdGroup });
 
+            return View();
+        }
+
+        public async Task<IActionResult> DeleteLesson(int lessonId, int groupId)
+        {
+            if(await _lessonService.DeleteLessonLogic(lessonId))
+                return RedirectToAction("Index", "Lesson", new { idGroup = groupId });
+            return RedirectToAction("Error");
+        }
+
+        [HttpGet]
+        public IActionResult EditLesson(int lessonId, int groupId)
+        {
+            
+            return View(_lessonService.GetLessonEditViewModel(lessonId,groupId));
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditLessonAsync(LessonEditViewModel lessonVM)
+        {
+            if(await _lessonService.EditLessonLogic(lessonVM))
+                return RedirectToAction("Index", "Lesson", new { idGroup = lessonVM.IdGrouop });
             return View();
         }
     }

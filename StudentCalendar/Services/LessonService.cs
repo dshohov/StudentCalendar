@@ -1,6 +1,7 @@
 ﻿using StudentCalendar.IRepositories;
 using StudentCalendar.IServices;
 using StudentCalendar.Models;
+using StudentCalendar.ViewModels;
 using System.Security.Permissions;
 
 namespace StudentCalendar.Services
@@ -29,6 +30,21 @@ namespace StudentCalendar.Services
         {
             var group = await _groupRepository.GetGroupById(idGroup);
             return group.Name;
+        }
+        public async Task<bool> DeleteLessonLogic(int lessonId)
+        {
+            var lesson = await _lessonRepository.FindLessonById(lessonId);
+            return await _lessonRepository.DeleteLesson(lesson);
+        }
+        public LessonEditViewModel GetLessonEditViewModel(int lessonId, int groupId)
+        {
+            return new LessonEditViewModel { Id = lessonId, IdGrouop = groupId };
+        }
+        public async Task<bool> EditLessonLogic(LessonEditViewModel lessonVM)
+        {
+            var lesson = await _lessonRepository.FindLessonById(lessonVM.Id);
+            lesson.Name = lessonVM.Name;
+            return await _lessonRepository.EditLesson(lesson);
         }
     }
 }
