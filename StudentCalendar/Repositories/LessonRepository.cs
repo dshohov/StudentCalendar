@@ -5,31 +5,29 @@ using StudentCalendar.Models;
 
 namespace StudentCalendar.Repositories
 {
-    public class GroupRepository : IGroupRepository
+    public class LessonRepository : ILessonRepository
     {
         private readonly ApplicationDbContext _context;
-        public GroupRepository(ApplicationDbContext context)
+        public LessonRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task<IQueryable<Group>> GetAll()
+
+        public async Task<bool> AddLessonAsync(Lesson lesson)
         {
-            return await Task.Run(()=> _context.Groups);
-        }
-        public async Task<bool> AddGroupAsync(Group group)
-        {
-            await _context.AddAsync(group);
+            await _context.AddAsync(lesson);
             return await SaveAsync();
         }
+
         public async Task<bool> SaveAsync()
         {
             var saved = await _context.SaveChangesAsync();
             return saved > 0 ? true : false;
         }
 
-        public async Task<Group> GetGroupById(int idGorup)
+        public async Task<IQueryable<Lesson>> GetLessonsByGroupId(int groupId)
         {
-            return await _context.Groups.FirstOrDefaultAsync(x=>x.Id == idGorup);
+            return await Task.Run(() => _context.Lessons.Where(x => x.IdGroup == groupId));
         }
     }
 }

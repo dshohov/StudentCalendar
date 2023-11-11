@@ -15,6 +15,7 @@ namespace StudentCalendar.Data
         }
         public DbSet<AppUser> AppUser { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Lesson> Lessons { get; set; } 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

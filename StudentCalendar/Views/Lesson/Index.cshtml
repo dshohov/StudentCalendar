@@ -1,0 +1,107 @@
+﻿@model IQueryable<Lesson>
+
+
+<div class="container mt-5">
+    <h1 class="text-center">Lessons schedule in @ViewData["NameGroup"]</h1>
+
+    <div class="row mt-4">
+        <div class="col">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">Monday</th>
+                        <th scope="col">Tuesday</th>
+                        <th scope="col">Wednesday</th>
+                        <th scope="col">Thursday</th>
+                        <th scope="col">Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Початок рядка для кожного часу -->
+                    <tr>
+                        <th scope="row">8:00-9:35</th>
+                        @{
+                            var firstTime = new TimeSpan(8, 0, 0);
+                            var firstLesson = Model.Where(x => x.StartTime == firstTime);
+
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                var lesson = firstLesson.FirstOrDefault(x => x.DayOfWeek == i);
+                                if (lesson != null)
+                                {
+                                    <td>@lesson.Name</td>
+                                }
+                                else
+                                {
+                                    <td><a asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@i" asp-route-startTime="@firstTime">Add Lesson</a></td>
+                                }
+                            }                            
+                        }
+                        
+                    </tr>
+                    <tr>
+                        <th scope="row">9:50-11:25</th>
+                        @{
+                            var secondTime = new TimeSpan(9, 50, 0);
+                            var secondLesson = Model.Where(x => x.StartTime == secondTime);
+
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                var lesson = secondLesson.FirstOrDefault(x => x.DayOfWeek == i);
+                                if (lesson != null)
+                                {
+                                    <td>@lesson.Name</td>
+                                }
+                                else
+                                {
+                                    <td><a asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@i" asp-route-startTime="@secondTime">Add Lesson</a></td>
+                                }
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <th scope="row">11:55-13:30</th>
+                        @{
+                            var thirdTime = new TimeSpan(11, 55, 0);
+                            var thirdLesson = Model.Where(x => x.StartTime == thirdTime);
+
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                var lesson = thirdLesson.FirstOrDefault(x => x.DayOfWeek == i);
+                                if (lesson != null)
+                                {
+                                    <td>@lesson.Name</td>
+                                }
+                                else
+                                {
+                                    <td><a asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@i" asp-route-startTime="@thirdTime">Add Lesson</a></td>
+                                }
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <th scope="row">13:45-15:20</th>
+                        @{
+                            var fourthTime = new TimeSpan(13, 45, 0);
+                            var fourthLesson = Model.Where(x => x.StartTime == fourthTime);
+
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                var lesson = fourthLesson.FirstOrDefault(x => x.DayOfWeek == i);
+                                if (lesson != null)
+                                {
+                                    <td>@lesson.Name</td>
+                                }
+                                else
+                                {
+                                    <td><a asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@i" asp-route-startTime="@fourthTime">Add Lesson</a></td>
+                                }
+                            }
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
