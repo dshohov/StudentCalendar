@@ -1,0 +1,29 @@
+﻿@model IQueryable<Event>
+
+
+<a asp-action="CreateEvent" asp-controller="Event">Create Event</a>
+
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-2">Id</div>
+            <div class="col-md-2">Event Name</div>
+            <div class="col-md-2">Description</div>
+            <div class="col-md-2">Date Time</div>
+            <div class="col-md-2">Location</div>
+        </div>
+    </li>
+    @foreach (Event eventInUni in Model)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-2">@eventInUni.Id</div>
+                <div class="col-md-2">@eventInUni.Name</div>
+                <div class="col-md-2">@eventInUni.Description</div>
+                <div class="col-md-2">@eventInUni.DateTime</div>
+                <div class="col-md-2">@eventInUni.Location</div>
+            </div>
+        </li>
+    }
+</ul>
