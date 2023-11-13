@@ -6,6 +6,7 @@ namespace StudentCalendar.IServices
     {
         Task<bool> CreateEvent(Event newEvent);
         Task<IQueryable<Event>> GetAllEvents();
-        Task<IQueryable<Event>> GetCurrentEvents();
+        Task<IQueryable<Event>> GetCurrentEvents(string userId);
+        
     }
 }

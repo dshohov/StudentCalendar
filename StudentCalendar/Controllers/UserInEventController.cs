@@ -18,13 +18,18 @@ namespace StudentCalendar.Controllers
         public async Task<IActionResult> AddUserInEvent(int eventId, string userId)
         {
             if(await _userInEventService.AddUserInEvent(eventId, userId))
-                return RedirectToAction("CurrentEvents", "Event");
+                return RedirectToAction("CurrentEvents", "Event",new { userId });
             return RedirectToAction("Error");
         }
 
         public async Task<IActionResult> UserCalendar(string userId, int? mounth)
         {
             return View(await _userInEventService.GetUserEvents(userId,mounth));
+        }
+        public async Task<IActionResult> RemoveEventInCalendar(int idEvent, string idUser)
+        {
+            await _userInEventService.RemoveUserInEvent(idEvent, idUser);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

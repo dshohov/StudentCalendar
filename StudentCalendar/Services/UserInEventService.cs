@@ -35,5 +35,10 @@ namespace StudentCalendar.Services
             return result;
         }
 
+        public async Task<bool> RemoveUserInEvent(int idEvent, string idUser)
+        {
+            var userInEvent = await _userInEventRepository.FindUserInEventByIdEvent(idEvent, idUser);
+            return await _userInEventRepository.RemoveUserInEventAsync(userInEvent);
+        }
     }
 }

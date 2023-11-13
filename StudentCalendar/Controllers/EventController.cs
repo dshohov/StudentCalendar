@@ -29,9 +29,9 @@ namespace StudentCalendar.Controllers
             return View(newEvent);
         }
 
-        public async Task<IActionResult> CurrentEvents()
+        public async Task<IActionResult> CurrentEvents(string userId)
         {
-            var currentEvent = await _eventService.GetCurrentEvents();
+            var currentEvent = await _eventService.GetCurrentEvents(userId);
             return View(currentEvent);
         }
         

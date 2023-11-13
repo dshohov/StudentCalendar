@@ -8,6 +8,7 @@
 
 @{
     var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+    var userId = UserManager.GetUserId(User);
 }
 <div class="list-group-item">
     <div class="row flex-nowrap">
@@ -15,7 +16,7 @@
             var currentMounth = DateTime.Now.Month;
             for (int i = currentMounth; i <= 12; i++)
             {
-                <div class="col" style="text-align:center;"><a asp-action="UserCalendar" asp-controller="UserInEvent" asp-route-mounth="@i" asp-route-userId="@UserManager.GetUserId(User);">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</a></div>
+                <div class="col" style="text-align:center;"><a asp-action="UserCalendar" asp-controller="UserInEvent" asp-route-mounth="@i" asp-route-userId="@UserManager.GetUserId(User)">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</a></div>
             }
         }
     </div>
@@ -33,21 +34,30 @@
             <div class="col-md-2">Location</div>
         </div>
     </li>
-
+    
     @for (int day = 1; day <= daysInMonth; day++)
     {
-        var dayEvent = Model.FirstOrDefault(x => x.DateTime.Day == day);
-        if (dayEvent != null)
+        var dayEvents = Model.Where(x => x.DateTime.Day == day).OrderBy(x=>x.DateTime);
+        if (dayEvents.Count() >= 1)
         {
             <li class="list-group-item bg-success">
-                <div class="row text-white">
-                    <div class="col-md-2">@day</div>
-                    <div class="col-md-2">@dayEvent.Name</div>
-                    <div class="col-md-2">@dayEvent.Description</div>
-                    <div class="col-md-2">@dayEvent.DateTime.TimeOfDay</div>
-                    <div class="col-md-2">@dayEvent.Location</div>
-                </div>
+                    
+            @foreach(var dayEvent in dayEvents)
+            {
+                    <div class="row text-white">
+                        <div class="col-md-2">@day</div>
+                        <div class="col-md-2">@dayEvent.Name</div>
+                        <div class="col-md-2">@dayEvent.Description</div>
+                        <div class="col-md-2">@dayEvent.DateTime.TimeOfDay</div>
+                        <div class="col-md-2">@dayEvent.Location</div>
+                        <div class="col-md-2">
+                            <a asp-action="RemoveEventInCalendar" asp-controller="UserInEvent" asp-route-idUser="@userId" asp-route-idEvent="@dayEvent.Id">Remove Event</a>
+                        </div>
+
+                    </div>
+            }
             </li>
+            
         }
         else
         {
@@ -62,15 +72,3 @@
     }
 </ul>
 
-@*@foreach (Event eventInUni in Model)
-{
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-md-2">@eventInUni.Name</div>
-            <div class="col-md-2">@eventInUni.Description</div>
-            <div class="col-md-2">@eventInUni.DateTime</div>
-            <div class="col-md-2">@eventInUni.Location</div>
-            <div class="col-md-2"><a asp-action="AddUserInEvent" asp-controller="UserInEvent" asp-route-eventId="@eventInUni.Id" asp-route-userId="@UserManager.GetUserId(User);">Add to My Calendar</a></div>
-        </div>
-    </li>
-}*@

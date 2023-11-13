@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using StudentCalendar.Data;
 using StudentCalendar.IRepositories;
 using StudentCalendar.Models;
@@ -43,6 +44,20 @@ namespace StudentCalendar.Repositories
             ));
 
             return events;
+        }
+
+        public async Task<bool> RemoveUserInEventAsync(UserInEvent userInEvent)
+        {
+            await Task.Run(()=>_context.Remove(userInEvent));
+            return await SaveAsync();
+        }
+
+        public async Task<UserInEvent> FindUserInEventByIdEvent(int idEvent, string idUser)
+        {
+            var a = _context.UsersInEvents.ToList();
+            var ev = a.Where(x => x.IdEvent == idEvent).ToList();
+            var us = ev.FirstOrDefault(x=>x.IdUser == idUser);
+            return us;
         }
     }
 }

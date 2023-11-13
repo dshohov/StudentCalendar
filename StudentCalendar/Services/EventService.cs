@@ -1,4 +1,5 @@
-﻿using StudentCalendar.IRepositories;
+﻿using Microsoft.AspNetCore.Identity;
+using StudentCalendar.IRepositories;
 using StudentCalendar.IServices;
 using StudentCalendar.Models;
 
@@ -7,13 +8,16 @@ namespace StudentCalendar.Services
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
-        public EventService(IEventRepository eventRepository)
+        private readonly UserManager<AppUser> _userManager;
+        public EventService(IEventRepository eventRepository, UserManager<AppUser> userManager)
         {
             _eventRepository = eventRepository;
+            _userManager = userManager;
         }
 
         public async Task<bool> CreateEvent(Event newEvent)
         {
+            newEvent.DateCreate = DateTime.Now;
             return await _eventRepository.AddEventAsync(newEvent);
         }
 
@@ -21,10 +25,18 @@ namespace StudentCalendar.Services
         {
             return await _eventRepository.GetAllAsync();
         }
-        public async Task<IQueryable<Event>> GetCurrentEvents()
+        public async Task<IQueryable<Event>> GetCurrentEvents(string userId)
         {
             var datetime = DateTime.Now;
-            return await _eventRepository.GetCurrentEvents(datetime);
+            var user = await _userManager.FindByIdAsync(userId);
+            user.LoginTime = DateTime.Now;
+            var a = await _userManager.UpdateAsync(user);
+
+            if (a.Succeeded)
+            {
+                return await _eventRepository.GetCurrentEvents(datetime,userId);
+            }
+            return await _eventRepository.GetCurrentEvents(datetime,userId);
         }
     }
 }

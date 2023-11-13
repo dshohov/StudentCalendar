@@ -35,6 +35,7 @@ builder.Services.Configure<IdentityOptions>(opt =>
     opt.Lockout.MaxFailedAccessAttempts = 5;
     //opt.SignIn.RequireConfirmedAccount = true;
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

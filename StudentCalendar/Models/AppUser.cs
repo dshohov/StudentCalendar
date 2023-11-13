@@ -9,6 +9,7 @@ namespace StudentCalendar.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int IdGroup { get; set; }
+        public DateTime LoginTime { get; set; }
         [NotMapped]
         public string? RoleId { get; set; }
         [NotMapped]
