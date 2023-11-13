@@ -22,6 +22,8 @@ builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IUserInEventRepository, UserInEventRepository>();
+builder.Services.AddScoped<IUserInEventService, UserInEventService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<ISendGridEmail, SendGridEmail>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("SendGrid"));

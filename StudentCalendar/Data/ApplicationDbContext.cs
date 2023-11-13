@@ -17,6 +17,7 @@ namespace StudentCalendar.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Lesson> Lessons { get; set; } 
         public DbSet<Event> Events { get; set; }
+        public DbSet<UserInEvent> UsersInEvents { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
