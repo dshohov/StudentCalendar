@@ -33,14 +33,14 @@ namespace StudentCalendar.Repositories
 
         public async Task<IQueryable<Event>> GetUserEvents(string userId)
         {
-            var eventIds = await _context.UsersInEvents
-             .Where(x => x.IdUser == userId)
-             .Select(x => x.IdEvent)
-             .ToListAsync();
-
-            // Отримати список івентів за цими ідентифікаторами
-            var events = _context.Events
-                .Where(x => eventIds.Contains(x.Id));
+            var events = await Task.Run(()=> _context.UsersInEvents
+            .Where(x => x.IdUser == userId)
+            .Join(
+                _context.Events,
+                userInEvent => userInEvent.IdEvent,
+                @event => @event.Id,
+                (userInEvent, @event) => @event
+            ));
 
             return events;
         }

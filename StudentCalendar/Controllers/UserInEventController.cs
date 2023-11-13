@@ -22,9 +22,9 @@ namespace StudentCalendar.Controllers
             return RedirectToAction("Error");
         }
 
-        public async Task<IActionResult> UserCalendar(string userId)
+        public async Task<IActionResult> UserCalendar(string userId, int? mounth)
         {
-            return View(await _userInEventService.GetUserEvents(userId));
+            return View(await _userInEventService.GetUserEvents(userId,mounth));
         }
     }
 }

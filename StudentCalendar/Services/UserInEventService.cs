@@ -2,6 +2,7 @@
 using StudentCalendar.IRepositories;
 using StudentCalendar.IServices;
 using StudentCalendar.Models;
+using System.Runtime.CompilerServices;
 
 namespace StudentCalendar.Services
 {
@@ -25,11 +26,13 @@ namespace StudentCalendar.Services
             return false;
         }
 
-        public async Task<IQueryable<Event>> GetUserEvents(string userId)
+        public async Task<IQueryable<Event>> GetUserEvents(string userId,int? mounth)
         {
             var a = await _userInEventRepository.GetUserEvents(userId);
-
-            return a;
+            if (mounth == null)
+                mounth = DateTime.Now.Month;
+            var result = a.Where(x=>x.DateTime.Month == mounth && x.DateTime.Year == DateTime.Now.Year);
+            return result;
         }
 
     }
