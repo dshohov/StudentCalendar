@@ -34,11 +34,11 @@ namespace StudentCalendar.Controllers
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string? code = null)
         {
             string currentUrl = HttpContext.Request.GetEncodedUrl();
             ViewData["Email"] = _accountService.GetResetPassword(currentUrl);
-            return code == null ? View("Error") : View();
+            return code == null ? RedirectToAction("Error", "Home") : View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -100,7 +100,7 @@ namespace StudentCalendar.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
-        public async Task<IActionResult> Register(string returnUrl = null)
+        public async Task<IActionResult> Register(string? returnUrl = null)
         {
             var registerViewModel = await _accountService.GetRegisterAsync(returnUrl);
             return View(registerViewModel);
@@ -142,9 +142,11 @@ namespace StudentCalendar.Controllers
                 }
                 var code = await _accountService.CreateCodeAsync(user);
                 var callbackurl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-
-                await _accountService.PostForgotPasswordAsync(model, callbackurl);
-                return RedirectToAction("ForgotPasswordConfirmation");
+                if(callbackurl != null)
+                {
+                    await _accountService.PostForgotPasswordAsync(model, callbackurl);
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }                
             }
             return View(model);
         }

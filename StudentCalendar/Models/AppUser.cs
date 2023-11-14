@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StudentCalendar.Models
 {
     public class AppUser : IdentityUser
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        [NotNull]
+        public string? FirstName { get; set; }
+        [NotNull]
+        public string? LastName { get; set; }
         public int IdGroup { get; set; }
         public DateTime LoginTime { get; set; }
         [NotMapped]

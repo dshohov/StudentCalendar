@@ -21,10 +21,14 @@ namespace StudentCalendar.Services
         public async Task<bool> ConfirmUser(string idUser)
         {
             var user = await _userManager.FindByIdAsync(idUser);
-            user.EmailConfirmed = true;
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-                return true;
+            if(user != null)
+            {
+                user.EmailConfirmed = true;
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                    return true;
+            }
+            
             return false;
         }
     }

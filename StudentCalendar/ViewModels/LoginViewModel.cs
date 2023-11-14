@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StudentCalendar.ViewModels
 {
     public class LoginViewModel
     {
+        [NotNull]
         [Required]
-        public string UserEmail { get; set; }
+        public string? UserEmail { get; set; }
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        [NotNull]
+        public string? Password { get; set; }
         [Display(Name = "Remember Me?")]
         public bool RememberMe { get; set; }
         public string? ReturnUrl { get; set; }

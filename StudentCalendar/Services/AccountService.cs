@@ -27,7 +27,7 @@ namespace StudentCalendar.Services
 
         public string GetResetPassword(string currentUrl)
         {            
-            string userId = null;
+            string userId="";
             string pattern = @"userId=([^&]+)";
             Match match = Regex.Match(currentUrl, pattern);
             if (match.Success)
@@ -36,7 +36,8 @@ namespace StudentCalendar.Services
 
             }
             var emailUser = _userManager.Users.First(c => c.Id == userId).Email;
-            return emailUser;
+            
+            return emailUser ?? throw new ArgumentNullException(nameof(emailUser));
         }
 
         
@@ -58,7 +59,7 @@ namespace StudentCalendar.Services
 
             if (user != null && !user.EmailConfirmed)
             {
-                return SignInResult.Failed; // або використовуйте власний об'єкт SignInResult для вказання помилки
+                return SignInResult.Failed; 
             }
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
             if (result.Succeeded)
@@ -106,6 +107,8 @@ namespace StudentCalendar.Services
                 if (_userManager.Users.Count() < 2)
                 {
                     await _userManager.AddToRoleAsync(user, "Admin");
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
                 }
                 else
                 {
@@ -119,7 +122,7 @@ namespace StudentCalendar.Services
 
         public async Task<AppUser> GetUserByEmailAsync(string email)
         {
-            return await _userManager.FindByEmailAsync(email);
+            return await _userManager.FindByEmailAsync(email)?? throw new ArgumentNullException();
         }
 
         public async Task PostForgotPasswordAsync(ForgotPasswordViewModel model,string callbackurl)

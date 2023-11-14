@@ -25,11 +25,10 @@ namespace StudentCalendar.Repositories
         }
         public async Task<IQueryable<Event>> GetCurrentEvents(DateTime dateTime, string userId)
         {
-            // userId - ідентифікатор поточного користувача
-            var eventsNotJoined = await Task.Run(() => _context.Events
-                .Where(e => !_context.UsersInEvents.Any(ue => ue.IdUser == userId && ue.IdEvent== e.Id)));
-
-            return await Task.Run(() => eventsNotJoined.Where(x=>x.DateTime >= dateTime));
+            return await Task.Run(() => 
+            _context.Events
+                            .Where(e => !_context.UsersInEvents.Any(ue => ue.IdUser == userId && ue.IdEvent == e.Id))
+                            .Where(x=>x.DateTime >= dateTime));
         }
 
         public async Task<bool> SaveAsync()

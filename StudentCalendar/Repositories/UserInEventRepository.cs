@@ -54,10 +54,8 @@ namespace StudentCalendar.Repositories
 
         public async Task<UserInEvent> FindUserInEventByIdEvent(int idEvent, string idUser)
         {
-            var a = _context.UsersInEvents.ToList();
-            var ev = a.Where(x => x.IdEvent == idEvent).ToList();
-            var us = ev.FirstOrDefault(x=>x.IdUser == idUser);
-            return us;
+            var userInEvent = await _context.UsersInEvents.Where(x => x.IdEvent == idEvent).FirstOrDefaultAsync(x => x.IdUser == idUser);
+            return userInEvent ?? throw new ArgumentNullException(nameof(userInEvent));
         }
     }
 }

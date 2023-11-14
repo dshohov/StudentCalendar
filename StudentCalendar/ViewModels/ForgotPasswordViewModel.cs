@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StudentCalendar.ViewModels
 {
@@ -6,6 +7,7 @@ namespace StudentCalendar.ViewModels
     {
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        [NotNull]
+        public string? Email { get; set; }
     }
 }

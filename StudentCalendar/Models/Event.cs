@@ -1,12 +1,21 @@
-﻿namespace StudentCalendar.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
+namespace StudentCalendar.Models
 {
     public class Event
     {
+        [NotNull]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        [NotNull]
+        public string? Name { get; set; }
+        [NotNull]
+        public string? Description { get; set; }
+        [NotNull]
         public DateTime DateTime { get; set; }
-        public string Location { get; set; }
+        [NotNull]
+        public string? Location { get; set; }
+        [NotNull]
         public DateTime DateCreate { get; set; }
         
     }

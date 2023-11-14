@@ -40,7 +40,7 @@ namespace StudentCalendar.Controllers
         {
             if(await _lessonService.DeleteLessonLogic(lessonId))
                 return RedirectToAction("Index", "Lesson", new { idGroup = groupId });
-            return RedirectToAction("Error");
+            return RedirectToAction("Error","Home");
         }
 
         [HttpGet]

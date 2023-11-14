@@ -28,10 +28,10 @@ namespace StudentCalendar.Services
 
         public async Task<IQueryable<Event>> GetUserEvents(string userId,int? mounth)
         {
-            var a = await _userInEventRepository.GetUserEvents(userId);
+            var userEvents = await _userInEventRepository.GetUserEvents(userId);
             if (mounth == null)
                 mounth = DateTime.Now.Month;
-            var result = a.Where(x=>x.DateTime.Month == mounth && x.DateTime.Year == DateTime.Now.Year);
+            var result = userEvents.Where(x=>x.DateTime.Month == mounth && x.DateTime.Year == DateTime.Now.Year);
             return result;
         }
 

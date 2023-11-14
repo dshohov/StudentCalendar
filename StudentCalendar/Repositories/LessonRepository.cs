@@ -38,7 +38,9 @@ namespace StudentCalendar.Repositories
 
         public async Task<Lesson> FindLessonById(int idLesson)
         {
-            return await _context.Lessons.FindAsync(idLesson);
+            var lesson = await _context.Lessons.FindAsync(idLesson);
+            return lesson ?? throw new ArgumentNullException(nameof(lesson));
+            
         }
         public async Task<IQueryable<Lesson>> GetLessonsByGroupId(int groupId)
         {

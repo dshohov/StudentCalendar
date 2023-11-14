@@ -29,7 +29,10 @@ namespace StudentCalendar.Repositories
 
         public async Task<Group> GetGroupById(int idGorup)
         {
-            return await _context.Groups.FirstOrDefaultAsync(x=>x.Id == idGorup);
+            var group = await _context.Groups.FirstOrDefaultAsync(x => x.Id == idGorup);
+            if(group != null)
+                return group;
+            throw new ArgumentNullException(nameof(group));
         }
     }
 }

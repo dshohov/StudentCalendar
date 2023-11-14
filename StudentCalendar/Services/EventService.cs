@@ -29,13 +29,17 @@ namespace StudentCalendar.Services
         {
             var datetime = DateTime.Now;
             var user = await _userManager.FindByIdAsync(userId);
-            user.LoginTime = DateTime.Now;
-            var a = await _userManager.UpdateAsync(user);
-
-            if (a.Succeeded)
+            if(user != null)
             {
-                return await _eventRepository.GetCurrentEvents(datetime,userId);
+                user.LoginTime = DateTime.Now;
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return await _eventRepository.GetCurrentEvents(datetime, userId);
+                }
             }
+           
             return await _eventRepository.GetCurrentEvents(datetime,userId);
         }
     }
