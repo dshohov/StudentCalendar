@@ -54,10 +54,15 @@ namespace StudentCalendar.Services
 
         public async Task<SignInResult> PostLogin(LoginViewModel loginViewModel)
         {
+            var user = await _userManager.FindByEmailAsync(loginViewModel.UserEmail);
+
+            if (user != null && !user.EmailConfirmed)
+            {
+                return SignInResult.Failed; // або використовуйте власний об'єкт SignInResult для вказання помилки
+            }
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
             if (result.Succeeded)
-            {
-                var user = await _userManager.FindByEmailAsync(loginViewModel.UserEmail);
+            {                
                 if(user != null)
                 {
                     user.LoginTime = DateTime.Now;
