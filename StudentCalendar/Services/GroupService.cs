@@ -1,6 +1,7 @@
-﻿using StudentCalendar.IRepositories;
+﻿
+using StudentCalendar.IRepositories;
 using StudentCalendar.IServices;
-using StudentCalendar.Models;
+using Models;
 using StudentCalendar.Repositories;
 
 namespace StudentCalendar.Services

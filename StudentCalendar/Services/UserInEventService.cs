@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentCalendar.IRepositories;
 using StudentCalendar.IServices;
-using StudentCalendar.Models;
+using Models;
 using System.Runtime.CompilerServices;
 
 namespace StudentCalendar.Services

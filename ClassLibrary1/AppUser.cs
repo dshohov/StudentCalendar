@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace StudentCalendar.Models
+namespace StudentCalendar.Class
 {   
         public class AppUser : IdentityUser// Зміни тут
         {

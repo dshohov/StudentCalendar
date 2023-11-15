@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StudentCalendar.Models;
+using Models;
 using System.Diagnostics;
 
 namespace StudentCalendar.Controllers

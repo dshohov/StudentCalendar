@@ -1,4 +1,4 @@
-﻿using StudentCalendar.Models;
+﻿using Models;
 
 namespace StudentCalendar.IRepositories
 {

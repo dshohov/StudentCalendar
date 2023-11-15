@@ -1,6 +1,6 @@
 ﻿using StudentCalendar.IRepositories;
 using StudentCalendar.IServices;
-using StudentCalendar.Models;
+using Models;
 using StudentCalendar.ViewModels;
 using System.Security.Permissions;
 

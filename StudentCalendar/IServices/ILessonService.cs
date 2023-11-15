@@ -1,4 +1,4 @@
-﻿using StudentCalendar.Models;
+﻿using Models;
 using StudentCalendar.ViewModels;
 
 namespace StudentCalendar.IServices

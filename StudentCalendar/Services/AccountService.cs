@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using StudentCalendar.Interfaces;
 using StudentCalendar.IServices;
-using StudentCalendar.Models;
+using Models;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http.Extensions;
 using StudentCalendar.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using StudentCalendar.Models;
 
 namespace StudentCalendar.Services
 {
@@ -99,22 +100,29 @@ namespace StudentCalendar.Services
 
         public async Task<bool> PostRegisterAsync(RegisterViewModel registerViewModel)
         {
+            
             var user = new AppUser { Email = registerViewModel.Email, FirstName = registerViewModel.FirstName, LastName = registerViewModel.LastName, IdGroup = Convert.ToInt32(registerViewModel.GroupSelected), UserName = registerViewModel.Email};
-            var result = await _userManager.CreateAsync(user, registerViewModel.Password);
+            var result = new IdentityResult();
+            //Only the first user will be an admin
+            if (_userManager.Users.Count() < 2)
+            {
+                user.EmailConfirmed = true;
+                result = await _userManager.CreateAsync(user, registerViewModel.Password);
+                await _userManager.AddToRoleAsync(user, "Admin");          
+            }
+            else
+            {
+                if(user.IdGroup != 0)
+                {
+                    result = await _userManager.CreateAsync(user, registerViewModel.Password);
+                    await _userManager.AddToRoleAsync(user, "User");
+
+                }
+                
+            }
             if (result.Succeeded)
             {
-                //Only the first user will be an admin
-                if (_userManager.Users.Count() < 2)
-                {
-                    await _userManager.AddToRoleAsync(user, "Admin");
-                    user.EmailConfirmed = true;
-                    await _userManager.UpdateAsync(user);
-                }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user, "User");
-                }
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                
                 return true;
             }
             return false;

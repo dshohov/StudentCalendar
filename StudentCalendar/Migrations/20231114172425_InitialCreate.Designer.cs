@@ -12,8 +12,8 @@ using StudentCalendar.Data;
 namespace StudentCalendar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231112160933_AddEvent")]
-    partial class AddEvent
+    [Migration("20231114172425_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,6 +194,9 @@ namespace StudentCalendar.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<DateTime>("LoginTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -241,6 +244,9 @@ namespace StudentCalendar.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
@@ -306,6 +312,29 @@ namespace StudentCalendar.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("StudentCalendar.Models.UserInEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdEvent")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IdUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Join")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UsersInEvents");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

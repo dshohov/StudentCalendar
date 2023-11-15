@@ -1,9 +1,8 @@
-﻿using StudentCalendar.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+using Models;
+using StudentCalendar.Models;
 
 namespace StudentCalendar.Data
 {

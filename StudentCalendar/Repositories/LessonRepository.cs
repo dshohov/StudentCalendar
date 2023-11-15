@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentCalendar.Data;
 using StudentCalendar.IRepositories;
-using StudentCalendar.Models;
+using Models;
 
 namespace StudentCalendar.Repositories
 {

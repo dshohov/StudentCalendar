@@ -31,7 +31,7 @@
         <label asp-for="Password" class="col-md-2"></label>
         <div class="col-md-10">
             <input asp-for="Password" class="form-control" />
-            <span asp-validation-for="Password" class="text-danger"></span>
+            <span asp-validation-for="Password" class="text-danger">The password must have (A-Z, a-z, 0-9, special symbol)</span>
         </div>
     </div>
     <div class="form-group">
@@ -48,6 +48,8 @@
                 <option disabled selected>--Select Role--</option>
             </select>
         </div>
+        <span asp-validation-for="GroupSelected" class="text-danger">You need to select a group</span>
+
     </div>
     <div class="form-group">
         <div class="offset-md-2 col-md-10">

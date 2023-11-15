@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using StudentCalendar.IRepositories;
 @using StudentCalendar.Repositories;
+@using StudentCalendar.Models;
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 @inject IEventRepository _eventRepository 
@@ -44,26 +45,43 @@
                             {
                                 var userId = UserManager.GetUserId(User);
                                 var user = await UserManager.FindByIdAsync(userId);
-                                var a = await _eventRepository.GetlastEvent();
-                                if (user != null)
+                                if(user != null)
                                 {
-                                    var idGroup = user.IdGroup;
-
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-route-idGroup="@idGroup" asp-controller="Lesson" asp-action="Index">View Lessons</a>
-                                    </li>
-                                    if (user.LoginTime < a.DateCreate)//.AddMinutes(2)) //for Test
-                                                {
-                                        <li class="nav-item">
-                                            <a class="bg-success nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
-                                        </li>
-                                    }
-                                    else
+                                    
+                                    if (user != null)
                                     {
+                                        var idGroup = user.IdGroup;
+                                        
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-route-idGroup="@idGroup" asp-controller="Lesson" asp-action="Index">View Lessons</a>
                                         </li>
-                                    }
+                                        var a = await _eventRepository.GetlastEvent();
+                                        if (a != null)
+                                        {
+                                            if (user.LoginTime < a.DateCreate)//.AddMinutes(2)) //for Test
+                                            {
+                                                <li class="nav-item">
+                                                    <a class="bg-success nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
+                                                </li>
+                                            }
+
+                                            
+                                        }
+                                        
+                                        else
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
+                                            </li>
+                                        }
+                                }
+                               
                                 }
                                 
                                 <li class="nav-item">

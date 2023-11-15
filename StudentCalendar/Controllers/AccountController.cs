@@ -1,5 +1,5 @@
 ﻿using StudentCalendar.Interfaces;
-using StudentCalendar.Models;
+using Models;
 using StudentCalendar.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;

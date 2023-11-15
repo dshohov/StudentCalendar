@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentCalendar.Data;
 using StudentCalendar.IRepositories;
-using StudentCalendar.Models;
+using Models;
 
 namespace StudentCalendar.Repositories
 {
@@ -38,7 +38,7 @@ namespace StudentCalendar.Repositories
         }
         public async Task<Event> GetlastEvent()
         {
-            return await _context.Events.OrderBy(x => x.DateCreate).LastAsync();
+            return await _context.Events.OrderBy(x => x.DateCreate).LastOrDefaultAsync();
         }
     }
 }

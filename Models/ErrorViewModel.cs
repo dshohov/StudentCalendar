@@ -1,4 +1,4 @@
-namespace StudentCalendar.Models
+namespace Models
 {
     public class ErrorViewModel
     {

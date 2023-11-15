@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudentCalendar.Data;
+using StudentCalendar.Models;
 using StudentCalendar.Helpers;
 using StudentCalendar.Interfaces;
 using StudentCalendar.IRepositories;
 using StudentCalendar.IServices;
-using StudentCalendar.Models;
+using Models;
 using StudentCalendar.Repositories;
 using StudentCalendar.Services;
 
