@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http.Extensions;
 using StudentCalendar.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StudentCalendar.Models;
+using StudentCalendar.IRepositories;
+using Microsoft.AspNetCore.SignalR.Protocol;
 
 namespace StudentCalendar.Services
 {
@@ -16,14 +18,14 @@ namespace StudentCalendar.Services
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ISendGridEmail _sendGridEmail;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IGroupService _groupService;
-        public AccountService(IGroupService groupService,UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ISendGridEmail sendGridEmail, RoleManager<IdentityRole> roleManager)
+        private readonly IGroupRepository _groupRepository;
+        public AccountService(IGroupRepository groupRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ISendGridEmail sendGridEmail, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _sendGridEmail = sendGridEmail;
             _roleManager = roleManager;
-            _groupService = groupService;
+            _groupRepository = groupRepository;
         }
 
         public string GetResetPassword(string currentUrl)
@@ -58,20 +60,21 @@ namespace StudentCalendar.Services
         {
             var user = await _userManager.FindByEmailAsync(loginViewModel.UserEmail);
 
-            if (user != null && !user.EmailConfirmed)
+            if (user != null && user.EmailConfirmed)
             {
-                return SignInResult.Failed; 
-            }
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
-            if (result.Succeeded)
-            {                
-                if(user != null)
+                var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
+                if (result.Succeeded)
                 {
-                    user.LoginTime = DateTime.Now;
-                    await _userManager.UpdateAsync(user);
-                }                
+                    if (user != null)
+                    {
+                        user.LoginTime = DateTime.Now;
+                        await _userManager.UpdateAsync(user);
+                    }
+                }
+                return result;
+                 
             }
-            return result;
+            return SignInResult.Failed;
         }
 
         public async Task PostLogOffAsync()
@@ -84,10 +87,9 @@ namespace StudentCalendar.Services
             if (!await _roleManager.RoleExistsAsync("User"))
             {
                 await _roleManager.CreateAsync(new IdentityRole("User"));
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
             }
             List<SelectListItem> listItems = new List<SelectListItem>();
-            var groups = await _groupService.GetGroupsAsync();
+            var groups = await _groupRepository.GetAll();
             foreach (var group in groups)
             {
                 listItems.Add(new SelectListItem { Value = group.Id.ToString(), Text = group.Name});
@@ -102,28 +104,13 @@ namespace StudentCalendar.Services
         {
             
             var user = new AppUser { Email = registerViewModel.Email, FirstName = registerViewModel.FirstName, LastName = registerViewModel.LastName, IdGroup = Convert.ToInt32(registerViewModel.GroupSelected), UserName = registerViewModel.Email};
-            var result = new IdentityResult();
-            //Only the first user will be an admin
-            if (_userManager.Users.Count() < 2)
+            if (user.IdGroup != 0)
             {
-                user.EmailConfirmed = true;
-                result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                await _userManager.AddToRoleAsync(user, "Admin");          
-            }
-            else
-            {
-                if(user.IdGroup != 0)
-                {
-                    result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                    await _userManager.AddToRoleAsync(user, "User");
-
-                }
+                var result = await _userManager.CreateAsync(user, registerViewModel.Password);
+                await _userManager.AddToRoleAsync(user, "User");
+                if (result.Succeeded)
+                    return true;
                 
-            }
-            if (result.Succeeded)
-            {
-                
-                return true;
             }
             return false;
         }

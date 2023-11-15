@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentCalendar.IServices;
 
 namespace StudentCalendar.Controllers
 {
+    [Authorize]
     public class UserInEventController : Controller
     {
         private readonly IUserInEventService _userInEventService;

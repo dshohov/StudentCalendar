@@ -40,34 +40,69 @@
     {
         var dayEvents = Model.Where(x => x.DateTime.Day == day).OrderBy(x=>x.DateTime);
         if (dayEvents.Count() >= 1)
-        {
-            <li class="list-group-item bg-success">
+        {            
+            
                     
             @foreach(var dayEvent in dayEvents)
             {
-                    <div class="row text-white">
-                        <div class="col-md-2">@day</div>
-                        <div class="col-md-2">@dayEvent.Name</div>
-                        <div class="col-md-2">@dayEvent.Description</div>
-                        <div class="col-md-2">@dayEvent.DateTime.TimeOfDay</div>
-                        <div class="col-md-2">@dayEvent.Location</div>
-                        <div class="col-md-2">
-                            <a asp-action="RemoveEventInCalendar" asp-controller="UserInEvent" asp-route-idUser="@userId" asp-route-idEvent="@dayEvent.Id">Remove Event</a>
-                        </div>
+                if(dayEvent.DateTime > DateTime.Now)
+                {
+                    <li class="list-group-item bg-success">
+                        <div class="row text-white">
+                            <div class="col-md-2">@day</div>
+                            <div class="col-md-2">@dayEvent.Name</div>
+                            <div class="col-md-2">@dayEvent.Description</div>
+                            <div class="col-md-2">@dayEvent.DateTime.TimeOfDay</div>
+                            <div class="col-md-2">@dayEvent.Location</div>
+                            <div class="col-md-2">
+                                <a asp-action="RemoveEventInCalendar" asp-controller="UserInEvent" asp-route-idUser="@userId" asp-route-idEvent="@dayEvent.Id">Remove Event</a>
+                            </div>
 
-                    </div>
+                        </div>
+                    </li>
+                }
+                else{
+                    <li class="list-group-item bg-info">
+                        <div class="row text-white">
+                            <div class="col-md-2">@day</div>
+                            <div class="col-md-2">@dayEvent.Name</div>
+                            <div class="col-md-2">@dayEvent.Description</div>
+                            <div class="col-md-2">@dayEvent.DateTime.TimeOfDay</div>
+                            <div class="col-md-2">@dayEvent.Location</div>
+                            <div class="col-md-2">
+                                <a asp-action="RemoveEventInCalendar" asp-controller="UserInEvent" asp-route-idUser="@userId" asp-route-idEvent="@dayEvent.Id">Remove Event</a>
+                            </div>
+
+                        </div>
+                    </li>
+                }
+               
+                   
             }
-            </li>
-            
+
+
         }
         else
         {
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-2">@day</div>
-                    Free Day
-                </div>
-            </li>
+            if(day > DateTime.Now.Date.Day)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-2">@day</div>
+                        Free Day
+                    </div>
+                </li>
+            }
+            else
+            {
+                <li class="list-group-item bg-secondary">
+                    <div class="row">
+                        <div class="col-md-2">@day</div>
+                        Free Day
+                    </div>
+                </li>
+            }
+
         }
         
     }

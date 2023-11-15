@@ -35,60 +35,53 @@
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            if (User.IsInRole("Admin"))
+                            var userId = UserManager.GetUserId(User);
+                            var user = await UserManager.FindByIdAsync(userId);
+                            if (user != null)
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="AdminFunctions">AdminFunction</a>
-                                </li>
-                            }
-                            else
-                            {
-                                var userId = UserManager.GetUserId(User);
-                                var user = await UserManager.FindByIdAsync(userId);
-                                if(user != null)
-                                {
-                                    
-                                    if (user != null)
-                                    {
-                                        var idGroup = user.IdGroup;
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-route-idGroup="@idGroup" asp-controller="Lesson" asp-action="Index">View Lessons</a>
-                                        </li>
-                                        var a = await _eventRepository.GetlastEvent();
-                                        if (a != null)
-                                        {
-                                            if (user.LoginTime < a.DateCreate)//.AddMinutes(2)) //for Test
-                                            {
-                                                <li class="nav-item">
-                                                    <a class="bg-success nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
-                                                </li>
-                                            }
-                                            else
-                                            {
-                                                <li class="nav-item">
-                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
-                                                </li>
-                                            }
 
-                                            
+                                if (user != null)
+                                {
+                                    var idGroup = user.IdGroup;
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-route-idGroup="@idGroup" asp-controller="Lesson" asp-action="Index">View Lessons</a>
+                                    </li>
+                                    var a = await _eventRepository.GetlastEvent();
+                                    if (a != null)
+                                    {
+                                        if (user.LoginTime < a.DateCreate)//.AddMinutes(2)) //for Test
+                                        {
+                                            <li class="nav-item">
+                                                <a class="bg-success nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
+                                            </li>
                                         }
-                                        
                                         else
                                         {
                                             <li class="nav-item">
                                                 <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
                                             </li>
                                         }
+
+
+                                    }
+
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-route-userId="@userId" asp-action="CurrentEvents">View Current Events</a>
+                                        </li>
+                                    }
                                 }
-                               
-                                }
-                                
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-action="UserCalendar" asp-controller="UserInEvent" asp-route-userId="@UserManager.GetUserId(User)">My Calendar</a>
-                                </li>
-                                
+
                             }
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-action="UserCalendar" asp-controller="UserInEvent" asp-route-userId="@UserManager.GetUserId(User)">My Calendar</a>
+                            </li>
+
+
+
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Hello @UserManager.GetUserName(User)</a>
                             </li>

@@ -16,17 +16,6 @@ namespace StudentCalendar.Services
             _eventRepository = eventRepository;
             _userManager = userManager;
         }
-
-        public async Task<bool> CreateEvent(Event newEvent)
-        {
-            newEvent.DateCreate = DateTime.Now;
-            return await _eventRepository.AddEventAsync(newEvent);
-        }
-
-        public async Task<IQueryable<Event>> GetAllEvents()
-        {
-            return await _eventRepository.GetAllAsync();
-        }
         public async Task<IQueryable<Event>> GetCurrentEvents(string userId)
         {
             var datetime = DateTime.Now;

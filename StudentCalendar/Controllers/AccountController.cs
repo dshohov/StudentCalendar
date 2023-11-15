@@ -151,9 +151,5 @@ namespace StudentCalendar.Controllers
             return View(model);
         }
 
-        public IActionResult AdminFunctions()
-        {
-            return View();
-        }
     }
 }

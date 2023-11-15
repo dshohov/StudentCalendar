@@ -16,16 +16,6 @@ namespace StudentCalendar.Repositories
         {
             return await Task.Run(()=> _context.Groups);
         }
-        public async Task<bool> AddGroupAsync(Group group)
-        {
-            await _context.AddAsync(group);
-            return await SaveAsync();
-        }
-        public async Task<bool> SaveAsync()
-        {
-            var saved = await _context.SaveChangesAsync();
-            return saved > 0 ? true : false;
-        }
 
         public async Task<Group> GetGroupById(int idGorup)
         {
