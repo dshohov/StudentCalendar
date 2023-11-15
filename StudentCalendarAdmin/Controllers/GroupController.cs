@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentCalendarAdmin.IServices;
 using Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentCalendarAdmin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class GroupController : Controller
     {
         private readonly IGroupService _groupService;

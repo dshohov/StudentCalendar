@@ -26,23 +26,6 @@ namespace StudentCalendarAdmin.Services
         public async Task<IQueryable<Event>> GetAllEvents()
         {
             return await _eventRepository.GetAllAsync();
-        }
-        public async Task<IQueryable<Event>> GetCurrentEvents(string userId)
-        {
-            var datetime = DateTime.Now;
-            var user = await _userManager.FindByIdAsync(userId);
-            if(user != null)
-            {
-                user.LoginTime = DateTime.Now;
-                var result = await _userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
-                {
-                    return await _eventRepository.GetCurrentEvents(datetime, userId);
-                }
-            }
-           
-            return await _eventRepository.GetCurrentEvents(datetime,userId);
-        }
+        }        
     }
 }

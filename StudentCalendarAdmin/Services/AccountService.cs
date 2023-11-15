@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using StudentCalendarAdmin.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StudentCalendarAdmin.Models;
+using Microsoft.AspNetCore.SignalR.Protocol;
 
 namespace StudentCalendarAdmin.Services
 {
@@ -58,20 +59,20 @@ namespace StudentCalendarAdmin.Services
         {
             var user = await _userManager.FindByEmailAsync(loginViewModel.UserEmail);
 
-            if (user != null && !user.EmailConfirmed)
+            if (user != null && user.EmailConfirmed && await _userManager.IsInRoleAsync(user, "Admin"))
             {
-                return SignInResult.Failed; 
-            }
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
-            if (result.Succeeded)
-            {                
-                if(user != null)
+                var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
+
+                if (result.Succeeded)
                 {
                     user.LoginTime = DateTime.Now;
                     await _userManager.UpdateAsync(user);
-                }                
+                    return result;
+                }
             }
-            return result;
+
+            return SignInResult.Failed;
+
         }
 
         public async Task PostLogOffAsync()
@@ -81,50 +82,25 @@ namespace StudentCalendarAdmin.Services
 
         public async Task<RegisterViewModel> GetRegisterAsync(string returnUrl)
         {
-            if (!await _roleManager.RoleExistsAsync("User"))
+            if (!await _roleManager.RoleExistsAsync("Admin"))
             {
-                await _roleManager.CreateAsync(new IdentityRole("User"));
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
             }
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            var groups = await _groupService.GetGroupsAsync();
-            foreach (var group in groups)
-            {
-                listItems.Add(new SelectListItem { Value = group.Id.ToString(), Text = group.Name});
-            }            
             RegisterViewModel registerViewModel = new RegisterViewModel();
             registerViewModel.ReturnUrl = returnUrl;
-            registerViewModel.Groups = listItems;
             return registerViewModel;
         }
 
         public async Task<bool> PostRegisterAsync(RegisterViewModel registerViewModel)
         {
             
-            var user = new AppUser { Email = registerViewModel.Email, FirstName = registerViewModel.FirstName, LastName = registerViewModel.LastName, IdGroup = Convert.ToInt32(registerViewModel.GroupSelected), UserName = registerViewModel.Email};
-            var result = new IdentityResult();
-            //Only the first user will be an admin
-            if (_userManager.Users.Count() < 2)
-            {
-                user.EmailConfirmed = true;
-                result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                await _userManager.AddToRoleAsync(user, "Admin");          
-            }
-            else
-            {
-                if(user.IdGroup != 0)
-                {
-                    result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                    await _userManager.AddToRoleAsync(user, "User");
-
-                }
-                
-            }
-            if (result.Succeeded)
-            {
-                
+            var user = new AppUser { Email = registerViewModel.Email, FirstName = registerViewModel.FirstName, LastName = registerViewModel.LastName, IdGroup = 0, UserName = registerViewModel.Email};
+            user.EmailConfirmed = true;
+            var result = await _userManager.CreateAsync(user, registerViewModel.Password);
+            await _userManager.AddToRoleAsync(user, "Admin");
+            if (result.Succeeded)                            
                 return true;
-            }
+            
             return false;
         }
 

@@ -24,8 +24,6 @@ builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
-builder.Services.AddScoped<IUserInEventRepository, UserInEventRepository>();
-builder.Services.AddScoped<IUserInEventService, UserInEventService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllersWithViews();
@@ -42,10 +40,9 @@ builder.Services.Configure<IdentityOptions>(opt =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";
-        options.LogoutPath = "/Account/LogOff";
+        options.LoginPath = "/Account/Login"; // Шлях до сторінки входу
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Шлях для відмови в доступі
     });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -61,11 +58,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
 
 app.Run();

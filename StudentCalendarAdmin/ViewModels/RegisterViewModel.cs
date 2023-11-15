@@ -21,9 +21,6 @@ namespace StudentCalendarAdmin.ViewModels
         [Display(Name = "LastName")]
         public string? LastName { get; set; }
         [Required]
-        [Display(Name = "Group")]
-        public Group? Group { get; set; }
-        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [NotNull]
@@ -37,8 +34,5 @@ namespace StudentCalendarAdmin.ViewModels
         public string? ConfirmPassword { get; set; }
 
         public string? ReturnUrl { get; set; }
-        public IEnumerable<SelectListItem>? Groups { get; set; }
-        [NotNull]
-        public string? GroupSelected { get; set; }
     }
 }

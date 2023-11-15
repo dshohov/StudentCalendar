@@ -35,8 +35,7 @@
                                         <div style="background-color:cornflowerblue;">
                                             @lesson.Name
                                         </div>
-                                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                                        {
+                                       
                                             <div>
                                                 <a asp-action="EditLesson" asp-controller="Lesson" asp-route-lessonId="@lesson.Id" asp-route-groupId="@lesson.IdGroup">
                                                     <button class="btn btn-info m-2">Edit</button>
@@ -45,20 +44,13 @@
                                                     <button class="btn btn-danger m-2">Delete</button>
                                                 </a>
                                             </div>
-                                        }
+                                        
                                     }
                                     else
                                     {
-                                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                                        {
-                                            <a asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@dayOfWeek" asp-route-startTime="@time.Split('-')[0]">
-                                                Add Lesson
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            <div >No Lesson</div>
-                                        }
+                                        <a asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@dayOfWeek" asp-route-startTime="@time.Split('-')[0]">
+                                            Add Lesson
+                                        </a>
                                     }
                                 </td>
                             }

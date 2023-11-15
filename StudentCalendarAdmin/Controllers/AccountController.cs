@@ -14,6 +14,7 @@ using StudentCalendarAdmin.IServices;
 
 namespace StudentCalendarAdmin.Controllers
 {
+
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -150,7 +151,7 @@ namespace StudentCalendarAdmin.Controllers
             }
             return View(model);
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminFunctions()
         {
             return View();

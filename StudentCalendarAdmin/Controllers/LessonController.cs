@@ -3,9 +3,11 @@ using StudentCalendarAdmin.IServices;
 using Models;
 using StudentCalendarAdmin.ViewModels;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentCalendarAdmin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class LessonController : Controller
     {
         private readonly ILessonService _lessonService;
@@ -13,6 +15,7 @@ namespace StudentCalendarAdmin.Controllers
         {
             _lessonService = lessonService;
         }
+        
         public async Task<IActionResult> Index(int idGroup)
         {
             ViewData["IdGroup"] = idGroup;
