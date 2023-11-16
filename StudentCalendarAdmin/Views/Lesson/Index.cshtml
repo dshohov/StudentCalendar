@@ -10,54 +10,56 @@
 
     <div class="row mt-4">
         <div class="col">
-            <table class="table table-bordered">
+            <table style="border-radius: 25px;" class="table table-bordered table-primary table-borderless">
                 <thead>
                     <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Monday</th>
-                        <th scope="col">Tuesday</th>
-                        <th scope="col">Wednesday</th>
-                        <th scope="col">Thursday</th>
-                        <th scope="col">Friday</th>
+                        <th scope="col" style="width: 10%;">Time</th>
+                        <th scope="col" style="width: 18%;">Monday</th>
+                        <th scope="col" style="width: 18%;">Tuesday</th>
+                        <th scope="col" style="width: 18%;">Wednesday</th>
+                        <th scope="col" style="width: 18%;">Thursday</th>
+                        <th scope="col" style="width: 18%;">Friday</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var time in new[] { "8:00-9:35", "9:50-11:25", "11:55-13:30", "13:45-15:20" })
                     {
                         <tr>
-                            <th scope="row">@time</th>
+                            <th scope="row" style="width: 10%;">@time</th>
                             @foreach (var dayOfWeek in Enumerable.Range(1, 5))
                             {
                                 var lesson = Model.FirstOrDefault(x => x.DayOfWeek == dayOfWeek && x.StartTime == TimeSpan.Parse(time.Substring(0, time.IndexOf('-'))));
-                                <td>
-                                    @if (lesson != null)
-                                    {
-                                        <div style="background-color:cornflowerblue;">
+
+                                @if (lesson != null)
+                                {
+                                    <td class="table-success" style="width: 18%;">
+                                        <div>
                                             @lesson.Name
                                         </div>
-                                       
-                                            <div>
-                                                <a asp-action="EditLesson" asp-controller="Lesson" asp-route-lessonId="@lesson.Id" asp-route-groupId="@lesson.IdGroup">
-                                                    <button class="btn btn-info m-2">Edit</button>
-                                                </a>
-                                                <a asp-action="DeleteLesson" asp-controller="Lesson" asp-route-lessonId="@lesson.Id" asp-route-groupId="@lesson.IdGroup">
-                                                    <button class="btn btn-danger m-2">Delete</button>
-                                                </a>
-                                            </div>
-                                        
-                                    }
-                                    else
-                                    {
-                                        <a asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@dayOfWeek" asp-route-startTime="@time.Split('-')[0]">
+                                        <div>
+                                            <a asp-action="EditLesson" asp-controller="Lesson" asp-route-lessonId="@lesson.Id" asp-route-groupId="@lesson.IdGroup">
+                                                <button class="btn btn-info m-2">Edit</button>
+                                            </a>
+                                            <a asp-action="DeleteLesson" asp-controller="Lesson" asp-route-lessonId="@lesson.Id" asp-route-groupId="@lesson.IdGroup">
+                                                <button class="btn btn-danger m-2">Delete</button>
+                                            </a>
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="table-light" style="width: 18%;">
+                                        <a class="btn btn-outline-info text-black" asp-action="CreateLesson" asp-controller="Lesson" asp-route-groupId="@ViewData["IdGroup"]" asp-route-dayOfWeek="@dayOfWeek" asp-route-startTime="@time.Split('-')[0]">
                                             Add Lesson
                                         </a>
-                                    }
-                                </td>
+                                    </td>
+                                }
                             }
                         </tr>
                     }
                 </tbody>
             </table>
+
         </div>
     </div>
 </div>

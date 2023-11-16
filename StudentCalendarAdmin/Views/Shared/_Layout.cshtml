@@ -17,53 +17,46 @@
     <link rel="stylesheet" href="~/IdentityApp.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">IdentityApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="AdminFunctions">AdminFunction</a>
-                                </li>
-                            }                                                                                       
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Hello @UserManager.GetUserName(User)</a>
-                            </li>
-                            <li class="nav-item">
-                                <form id="logoutForm" method="post" class="form-inline" asp-controller="Account" asp-action="LogOff">
-                                    <button type="submit" class="btn nav-link">Logout</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                        }
-                       
-                    </ul>
-                </div>
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="col-md-3 mb-2 mb-md-0">
+                <a class="d-inline-flex link-body-emphasis text-decoration-none nav-link px-2" href="#">Hello @UserManager.GetUserName(User)</a>
             </div>
-        </nav>
+        }
+        else
+        {
+            <div class="col-md-3 mb-2 mb-md-0">
+                <a class="d-inline-flex link-body-emphasis text-decoration-none nav-link px-2" href="#">Hello Admin!</a>
+            </div>
+        }
+        <ul class="nav nav-pills col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+            <li type="button" class="btn btn-primary "><a class="nav-link px-5 text-white" asp-area="" asp-controller="Home" asp-action="Index" class="nav-link px-2">Home</a></li>
+        </ul>
+        @if (!SignInManager.IsSignedIn(User))
+        {
+
+            <div class="col-md-3 text-end">
+                <a type="button" asp-action="Register" asp-controller="Account" class="btn btn-outline-primary me-2">Register</a>
+
+                <a asp-action="Login" asp-controller="Account" type="button" class="btn btn-outline-primary me-2">Login</a>
+
+
+            </div>
+        }
+        else
+        {
+            <div class="col-md-3 text-end">
+                <button type="button" class="btn btn-outline-primary me-2" onclick="redirectToLogout()">Logout</button>
+                <script>
+                    function redirectToLogout() {
+                        window.location.href = '/Account/LogOff';
+                    }
+                </script>
+            </div>
+        }
+        
     </header>
     <div class="container">
         <main role="main" class="pb-3">

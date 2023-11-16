@@ -91,10 +91,7 @@ namespace StudentCalendarAdmin.Controllers
                 }
             }
             return View(loginViewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        }       
         public async Task<IActionResult> LogOff()
         {
             await _accountService.PostLogOffAsync();
@@ -150,11 +147,6 @@ namespace StudentCalendarAdmin.Controllers
                 }                
             }
             return View(model);
-        }
-        [Authorize(Roles = "Admin")]
-        public IActionResult AdminFunctions()
-        {
-            return View();
-        }
+        }     
     }
 }

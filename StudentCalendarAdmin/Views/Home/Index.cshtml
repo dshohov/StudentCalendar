@@ -1,8 +1,36 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity;
+@using StudentCalendarAdmin.Models;
+@{
     ViewData["Title"] = "Home Page";
 }
+@inject SignInManager<AppUser> SignInManager;
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    
+<div style="text-align:center;" class="px-3">
+    <h1 class="display-3 mb-3">Welcome in Student Calendar Admin</h1>
+    <div style="border-radius: 25px;" class="bg-info p-3 mt-4">
+        <h2 class="mt-5 mb-5">University Life Management: Student Calendar - Control, Notifications, Interaction.</h2>
+        <p class="mb-5">Our administrator app is a tool for efficiently managing schedules and organizing events in the university environment. From sports activities to meetings with company representatives, you can easily add, reject, and control each event. Notifications help you stay informed, and the ability to accept or decline events makes calendar management even more convenient. Your university life - in your control!</p>
+
+    </div>
+
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <button type="button" class="btn btn-warning btn-lg p-3 mt-5" onclick="redirectToRegister()">Get Start!</button>
+        <script>
+            function redirectToRegister() {
+                window.location.href = '/Account/Login';
+            }
+        </script>
+
+    }
+    else
+    {
+        <div class="mt-5">
+            <a class="btn btn-success px-5 p-4" asp-action="Index" asp-controller="Group">Features with Group</a>
+            <a class="btn btn-success px-5 p-4" asp-action="Index" asp-controller="Event">Features with Event</a>
+            <a class="btn btn-success px-5 p-4" asp-action="Index" asp-controller="User">Features with Users</a>
+        </div>
+        
+    }
 </div>
+
