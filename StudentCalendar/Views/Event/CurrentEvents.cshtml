@@ -7,23 +7,24 @@
 
 
 <ul class="list-group">
-    <li class="list-group-item">
-        <div class="row">
+    <li class="list-group-item list-group-item-action list-group-item-primary ">
+        <div class="row justify-content-center">
             <div class="col-md-2">Event Name</div>
             <div class="col-md-2">Description</div>
             <div class="col-md-2">Date Time</div>
             <div class="col-md-2">Location</div>
+            <div class="col-md-2"></div>
         </div>
     </li>
     @foreach (Event eventInUni in Model)
     {
         <li class="list-group-item">
-            <div class="row">
+            <div class="row justify-content-center" >
                 <div class="col-md-2">@eventInUni.Name</div>
                 <div class="col-md-2">@eventInUni.Description</div>
                 <div class="col-md-2">@eventInUni.DateTime</div>
                 <div class="col-md-2">@eventInUni.Location</div>
-                <div class="col-md-2"><a asp-action="AddUserInEvent" asp-controller="UserInEvent" asp-route-eventId="@eventInUni.Id" asp-route-userId="@UserManager.GetUserId(User)">Add to My Calendar</a></div>
+                <div class="col-md-2"><a class="btn btn-outline-success" asp-action="AddUserInEvent" asp-controller="UserInEvent" asp-route-eventId="@eventInUni.Id" asp-route-userId="@UserManager.GetUserId(User)">Add to My Calendar</a></div>
             </div>
         </li>
     }

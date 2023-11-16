@@ -26,6 +26,7 @@ namespace StudentCalendar.Controllers
 
         public async Task<IActionResult> UserCalendar(string userId, int? mounth)
         {
+            ViewData["Mounth"] = mounth;
             return View(await _userInEventService.GetUserEvents(userId,mounth));
         }
         public async Task<IActionResult> RemoveEventInCalendar(int idEvent, string idUser)

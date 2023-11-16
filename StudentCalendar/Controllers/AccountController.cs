@@ -92,8 +92,6 @@ namespace StudentCalendar.Controllers
             return View(loginViewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
             await _accountService.PostLogOffAsync();
@@ -122,7 +120,7 @@ namespace StudentCalendar.Controllers
                     return LocalRedirect(returnUrl);
                 ModelState.AddModelError("Password", "User could not be created. Password not unique enough ");
             }
-            return View(registerViewModel);
+            return View(await _accountService.FailRegister(registerViewModel));
         }
 
         [HttpGet]

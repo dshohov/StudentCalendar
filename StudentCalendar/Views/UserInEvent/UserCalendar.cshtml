@@ -11,28 +11,31 @@
     var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
     var userId = UserManager.GetUserId(User);
 }
-<div class="list-group-item">
-    <div class="row flex-nowrap">
-        @{
-            var currentMounth = DateTime.Now.Month;
-            for (int i = currentMounth; i <= 12; i++)
-            {
-                <div class="col" style="text-align:center;"><a asp-action="UserCalendar" asp-controller="UserInEvent" asp-route-mounth="@i" asp-route-userId="@UserManager.GetUserId(User)">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</a></div>
+<div class="mb-3">
+    <ul class="nav nav-pills col-12 col-md-auto mb-2 justify-content-start mb-md-0">
+        <div class="btn-group me-2" role="group" aria-label="First group">
+            @{
+                var currentMounth = DateTime.Now.Month;
+                for (int i = currentMounth; i <= 12; i++)
+                {
+                <li class="btn btn-warning" style=""><a class="nav-link text-white" asp-action="UserCalendar" asp-controller="UserInEvent" asp-route-mounth="@i" asp-route-userId="@UserManager.GetUserId(User)">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</a></li>
+                }
             }
-        }
-    </div>
+        </div>
+    </ul>
 </div>
 
 
 
 <ul class="list-group">
-    <li class="list-group-item">
-        <div class="row">
+    <li class="list-group-item list-group-item-action list-group-item-primary ">
+        <div class="row ">
             <div class="col-md-2">Day</div>
             <div class="col-md-2">Event Name</div>
             <div class="col-md-2">Description</div>
             <div class="col-md-2">Date Time</div>
             <div class="col-md-2">Location</div>
+            <div class="col-md-2">Action</div>
         </div>
     </li>
     
@@ -47,30 +50,29 @@
             {
                 if(dayEvent.DateTime > DateTime.Now)
                 {
-                    <li class="list-group-item bg-success">
-                        <div class="row text-white">
+                    <li class="list-group-item list-group-item-success list-group-item-action">
+                        <div class="row text-black">
                             <div class="col-md-2">@day</div>
                             <div class="col-md-2">@dayEvent.Name</div>
                             <div class="col-md-2">@dayEvent.Description</div>
                             <div class="col-md-2">@dayEvent.DateTime.TimeOfDay</div>
                             <div class="col-md-2">@dayEvent.Location</div>
                             <div class="col-md-2">
-                                <a asp-action="RemoveEventInCalendar" asp-controller="UserInEvent" asp-route-idUser="@userId" asp-route-idEvent="@dayEvent.Id">Remove Event</a>
+                                <a class="btn btn-outline-danger" asp-action="RemoveEventInCalendar" asp-controller="UserInEvent" asp-route-idUser="@userId" asp-route-idEvent="@dayEvent.Id">Remove Event</a>
                             </div>
 
                         </div>
                     </li>
                 }
                 else{
-                    <li class="list-group-item bg-info">
-                        <div class="row text-white">
+                    <li class="list-group-item list-group-item-warning ">
+                        <div class="row  text-white">
                             <div class="col-md-2">@day</div>
                             <div class="col-md-2">@dayEvent.Name</div>
                             <div class="col-md-2">@dayEvent.Description</div>
                             <div class="col-md-2">@dayEvent.DateTime.TimeOfDay</div>
                             <div class="col-md-2">@dayEvent.Location</div>
                             <div class="col-md-2">
-                                <a asp-action="RemoveEventInCalendar" asp-controller="UserInEvent" asp-route-idUser="@userId" asp-route-idEvent="@dayEvent.Id">Remove Event</a>
                             </div>
 
                         </div>
@@ -84,24 +86,39 @@
         }
         else
         {
-            if(day > DateTime.Now.Date.Day)
+            if ((int)ViewData["Mounth"] > DateTime.Now.Date.Month)
             {
-                <li class="list-group-item">
-                    <div class="row">
+                <li class="list-group-item list-group-item-light ">
+                    <div class="row ">
                         <div class="col-md-2">@day</div>
-                        Free Day
+                        <div class="col-md-2">Free Day</div>
                     </div>
                 </li>
             }
             else
             {
-                <li class="list-group-item bg-secondary">
-                    <div class="row">
-                        <div class="col-md-2">@day</div>
-                        Free Day
-                    </div>
-                </li>
+                if (day < DateTime.Now.Date.Day)
+                {
+                    <li class="list-group-item list-group-item-dark ">
+                        <div class="row ">
+                            <div class="col-md-2">@day</div>
+                            <div class="col-md-2">Free Day</div>
+
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="list-group-item list-group-item-light ">
+                        <div class="row ">
+                            <div class="col-md-2">@day</div>
+                            <div class="col-md-2">Free Day</div>
+                        </div>
+                    </li>
+                }
             }
+
+           
 
         }
         

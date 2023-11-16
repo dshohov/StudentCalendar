@@ -99,6 +99,17 @@ namespace StudentCalendar.Services
             registerViewModel.Groups = listItems;
             return registerViewModel;
         }
+        public async Task<RegisterViewModel> FailRegister(RegisterViewModel registerViewModel)
+        {
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            var groups = await _groupRepository.GetAll();
+            foreach (var group in groups)
+            {
+                listItems.Add(new SelectListItem { Value = group.Id.ToString(), Text = group.Name });
+            }
+            registerViewModel.Groups = listItems;
+            return registerViewModel;
+        }
 
         public async Task<bool> PostRegisterAsync(RegisterViewModel registerViewModel)
         {
