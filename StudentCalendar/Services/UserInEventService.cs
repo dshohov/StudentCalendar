@@ -9,11 +9,9 @@ namespace StudentCalendar.Services
     public class UserInEventService : IUserInEventService
     {
         private readonly IUserInEventRepository _userInEventRepository;
-        private readonly IEventRepository _eventRepository;
-        public UserInEventService (IUserInEventRepository userInEventRepository, IEventRepository eventRepository)
+        public UserInEventService (IUserInEventRepository userInEventRepository)
         {
             _userInEventRepository = userInEventRepository;
-            _eventRepository = eventRepository;
         }
 
         public async Task<bool> AddUserInEvent(int eventId, string userId)

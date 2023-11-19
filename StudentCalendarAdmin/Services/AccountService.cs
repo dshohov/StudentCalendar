@@ -17,14 +17,13 @@ namespace StudentCalendarAdmin.Services
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ISendGridEmail _sendGridEmail;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IGroupService _groupService;
-        public AccountService(IGroupService groupService,UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ISendGridEmail sendGridEmail, RoleManager<IdentityRole> roleManager)
+ 
+        public AccountService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ISendGridEmail sendGridEmail, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _sendGridEmail = sendGridEmail;
             _roleManager = roleManager;
-            _groupService = groupService;
         }
 
         public string GetResetPassword(string currentUrl)

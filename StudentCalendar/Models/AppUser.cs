@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace StudentCalendar.Models
 {   
-        public class AppUser : IdentityUser// Зміни тут
+        public class AppUser : IdentityUser
         {
             [NotNull]
             public string? FirstName { get; set; }

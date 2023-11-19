@@ -10,11 +10,9 @@ namespace StudentCalendarAdmin.Services
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
-        private readonly UserManager<AppUser> _userManager;
-        public EventService(IEventRepository eventRepository, UserManager<AppUser> userManager)
+        public EventService(IEventRepository eventRepository)
         {
             _eventRepository = eventRepository;
-            _userManager = userManager;
         }
 
         public async Task<bool> CreateEvent(Event newEvent)
